@@ -6,6 +6,9 @@ import {
   SIGNUP_URL,
   WISHLIST_URL,
   CATEGORIES_URL,
+  ORDERS_URL,
+  ORDERS_VERIFY_PAYMENT_URL,
+  ADMIN_DASHBOARD_METRICS_URL,
 } from "./apiUrls";
 
 export const loginService = (email, password) =>
@@ -14,7 +17,8 @@ export const loginService = (email, password) =>
 export const signupService = (username, email, password) =>
   axios.post(SIGNUP_URL, { username, email, password });
 
-export const getAllProductsService = () => axios.get(PRODUCTS_URL);
+export const getAllProductsService = (page = 1, limit = 12) =>
+  axios.get(PRODUCTS_URL, { params: { page, limit } });
 
 export const getProductByIdService = (productId) =>
   axios.get(`${PRODUCTS_URL}/${productId}`);
@@ -96,3 +100,51 @@ export const postAddReviewService = (productId, rating, comment, token) =>
       },
     }
   );
+
+// Order services
+export const createOrderService = (orderData, token) =>
+  axios.post(ORDERS_URL, orderData, {
+    headers: {
+      authorization: token,
+    },
+  });
+
+export const verifyPaymentService = (paymentData, token) =>
+  axios.post(ORDERS_VERIFY_PAYMENT_URL, paymentData, {
+    headers: {
+      authorization: token,
+    },
+  });
+
+export const getUserOrdersService = (token) =>
+  axios.get(ORDERS_URL, {
+    headers: {
+      authorization: token,
+    },
+  });
+
+export const getOrderByIdService = (orderId, token) =>
+  axios.get(`${ORDERS_URL}/${orderId}`, {
+    headers: {
+      authorization: token,
+    },
+  });
+
+export const cancelOrderService = (orderId, token) =>
+  axios.put(
+    `${ORDERS_URL}/${orderId}/cancel`,
+    {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+
+// Admin services
+export const getAdminDashboardMetricsService = (token) =>
+  axios.get(ADMIN_DASHBOARD_METRICS_URL, {
+    headers: {
+      authorization: token,
+    },
+  });

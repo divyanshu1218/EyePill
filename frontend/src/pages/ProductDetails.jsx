@@ -12,16 +12,16 @@ import {
   useProductsContext,
   useWishlistContext,
 } from "../contexts";
-import { getProductByIdService } from "../api/apiServices";
 import { StarRating, TrendingCard } from "../components";
 import { notify } from "../utils/utils";
+import { getProductByIdService, postAddReviewService } from "../api/apiServices";
 
 const ProductDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { productId } = useParams();
   const { token } = useAuthContext();
-  const { getProductById, allProducts } = useProductsContext();
+  const { getProductById, allProducts, refreshProducts } = useProductsContext();
   const { addProductToCart, disableCart } = useCartContext();
   const { addProductToWishlist, deleteProductFromWishlist, disableWish } =
     useWishlistContext();
@@ -30,6 +30,9 @@ const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [pincode, setPincode] = useState("");
   const [isPincodeChecked, setIsPincodeChecked] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [newReview, setNewReview] = useState({ rating: 5, comment: "" });
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
   // Dynamic data from product object
   const images = useMemo(() => {
@@ -49,6 +52,36 @@ const ProductDetails = () => {
       .filter(p => p.category === product?.category && p.id !== product?.id)
       .slice(0, 4);
   }, [allProducts, product]);
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!token) {
+      navigate("/login", { state: { from: location.pathname } });
+      notify("warn", "Please Login to continue");
+      return;
+    }
+    if (!newReview.comment.trim()) {
+      notify("error", "Please add a comment");
+      return;
+    }
+
+    setIsSubmittingReview(true);
+    try {
+      const response = await postAddReviewService(productId, newReview.rating, newReview.comment, token);
+      if (response.data.success) {
+        notify("success", "Review added successfully!");
+        setShowReviewForm(false);
+        setNewReview({ rating: 5, comment: "" });
+        // Refresh global product state to show new review and updated rating
+        await refreshProducts();
+      }
+    } catch (err) {
+      console.error(err);
+      notify("error", "Failed to add review");
+    } finally {
+      setIsSubmittingReview(false);
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -335,8 +368,83 @@ const ProductDetails = () => {
               <h2 className="text-2xl font-bold text-gray-900">Ratings & Reviews</h2>
               <p className="text-sm text-gray-500 mt-1">Verified customers shared their experience</p>
             </div>
-            <button className="text-blue-600 font-bold hover:underline">Write a Review</button>
+            <button 
+              onClick={() => setShowReviewForm(true)}
+              className="text-blue-600 font-bold hover:underline"
+            >
+              Write a Review
+            </button>
           </div>
+          
+          {/* Review Form Modal */}
+          <AnimatePresence>
+            {showReviewForm && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="bg-white rounded-3xl p-8 max-w-lg w-full shadow-2xl"
+                >
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900">Write a Review</h2>
+                    <button onClick={() => setShowReviewForm(false)} className="text-gray-400 hover:text-gray-600">
+                      <IoChevronBackOutline size={24} className="rotate-90" />
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleReviewSubmit} className="space-y-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-gray-700">Rating</label>
+                      <div className="flex gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setNewReview({ ...newReview, rating: star })}
+                            className="transition-transform active:scale-90"
+                          >
+                            <IoStar 
+                              size={32} 
+                              className={star <= newReview.rating ? "text-yellow-400" : "text-gray-200"} 
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-gray-700">Your Experience</label>
+                      <textarea
+                        required
+                        value={newReview.comment}
+                        onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                        placeholder="What did you like or dislike about this product?"
+                        className="w-full h-32 px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all resize-none"
+                      />
+                    </div>
+
+                    <div className="flex gap-4">
+                      <button
+                        type="button"
+                        onClick={() => setShowReviewForm(false)}
+                        className="flex-1 py-3 px-6 rounded-xl border border-gray-200 font-bold text-gray-600 hover:bg-gray-50 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={isSubmittingReview}
+                        className="flex-1 py-3 px-6 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-colors shadow-lg shadow-gray-900/20 disabled:opacity-50"
+                      >
+                        {isSubmittingReview ? "Submitting..." : "Submit Review"}
+                      </button>
+                    </div>
+                  </form>
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
             {/* Rating Summary */}
@@ -352,18 +460,22 @@ const ProductDetails = () => {
               </div>
               
               <div className="space-y-3">
-                {[5, 4, 3, 2, 1].map(star => (
-                  <div key={star} className="flex items-center gap-3">
-                    <span className="text-xs font-bold text-gray-400 w-4">{star} ★</span>
-                    <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-green-500 rounded-full" 
-                        style={{ width: `${star === 5 ? (reviews.length ? 80 : 0) : 0}%` }}
-                      ></div>
+                {[5, 4, 3, 2, 1].map(star => {
+                  const starCount = reviews.filter(r => r.rating === star).length;
+                  const percentage = reviews.length ? (starCount / reviews.length) * 100 : 0;
+                  return (
+                    <div key={star} className="flex items-center gap-3">
+                      <span className="text-xs font-bold text-gray-400 w-4">{star} ★</span>
+                      <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-green-500 rounded-full" 
+                          style={{ width: `${percentage}%` }}
+                        ></div>
+                      </div>
+                      <span className="text-xs text-gray-400 w-8">{starCount}</span>
                     </div>
-                    <span className="text-xs text-gray-400 w-8">{star === 5 ? (reviews.length || 0) : 0}</span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -385,9 +497,11 @@ const ProductDetails = () => {
                   </p>
                   <div className="flex items-center gap-2 mt-4">
                     <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-600 uppercase">
-                      {review.user?.firstName[0]}{review.user?.lastName[0]}
+                      {review.user?.firstName?.[0] || 'U'}{review.user?.lastName?.[0] || ''}
                     </div>
-                    <span className="text-xs font-bold text-gray-900 italic text-center">{review.user?.firstName} {review.user?.lastName}</span>
+                    <span className="text-xs font-bold text-gray-900 italic text-center">
+                      {review.user ? `${review.user.firstName} ${review.user.lastName}` : 'Anonymous'}
+                    </span>
                     <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold uppercase">Verified Buyer</span>
                   </div>
                 </div>

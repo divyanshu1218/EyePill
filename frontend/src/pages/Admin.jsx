@@ -174,7 +174,7 @@ const Admin = () => {
                     <input type="text" placeholder="Name" required className="border p-2 rounded" value={productData.name} onChange={e => setProductData({...productData, name: e.target.value})} />
                     <input type="text" placeholder="Brand" className="border p-2 rounded" value={productData.brand} onChange={e => setProductData({...productData, brand: e.target.value})} />
                     <input type="number" placeholder="Original Price" required className="border p-2 rounded" value={productData.price} onChange={e => setProductData({...productData, price: e.target.value})} />
-                    <input type="number" placeholder="Discounted Price" required className="border p-2 rounded" value={productData.newPrice} onChange={e => setProductData({...productData, newPrice: e.target.value})} />
+                    <input type="number" placeholder="Discounted Price (Optional)" className="border p-2 rounded" value={productData.newPrice} onChange={e => setProductData({...productData, newPrice: e.target.value})} />
                     <select className="border p-2 rounded" value={productData.category} onChange={e => setProductData({...productData, category: e.target.value})}>
                         <option value="sports">Sports</option>
                         <option value="sunglasses">Sunglasses</option>

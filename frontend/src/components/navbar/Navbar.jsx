@@ -42,9 +42,11 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`flex flex-col sm:flex-row py-3 max-w-screen mb-3 fixed left-0 right-0 px-[4%] md:px-[10%] bg-[--theme-color] ${
-        colorChange ? "shadow-sm  drop-shadow-sm" : ""
-      } z-10 transition delay-75 ease-in-out`}
+      className={`flex flex-col sm:flex-row py-4 fixed top-0 left-0 right-0 px-[2%] md:px-[4%] transition-all duration-300 z-[100] ${
+        colorChange 
+        ? "bg-white/80 backdrop-blur-lg shadow-md border-b border-gray-100" 
+        : "bg-[--theme-color]"
+      }`}
     >
       <div className="flex justify-between w-full items-center gap-4">
         <section className="flex items-center flex-shrink-0">

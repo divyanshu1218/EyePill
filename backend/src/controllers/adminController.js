@@ -1,4 +1,6 @@
 const Product = require('../models/Product');
+const User = require('../models/User');
+const Order = require('../models/Order');
 const path = require('path');
 
 // @desc    Add new product
@@ -28,7 +30,7 @@ const addProduct = async (req, res) => {
             name,
             brand,
             price,
-            newPrice,
+            newPrice: newPrice || price,
             category,
             gender,
             description,
@@ -63,6 +65,11 @@ const updateProduct = async (req, res) => {
 
         if (colors) updateData.colors = typeof colors === 'string' ? JSON.parse(colors) : colors;
         if (sizes) updateData.sizes = typeof sizes === 'string' ? JSON.parse(sizes) : sizes;
+
+        // If newPrice is empty or not provided, default to price
+        if (!req.body.newPrice || req.body.newPrice === "") {
+            updateData.newPrice = req.body.price || product.price;
+        }
 
         if (req.files) {
             if (req.files['image']) {
@@ -102,8 +109,85 @@ const deleteProduct = async (req, res) => {
     }
 };
 
+// @desc    Get dashboard metrics
+// @route   GET /api/admin/dashboard-metrics
+// @access  Private/Admin
+const getDashboardMetrics = async (req, res) => {
+    try {
+        // Total users count
+        const totalUsers = await User.count();
+        
+        // Total products count
+        const totalProducts = await Product.count();
+        
+        // Total orders count
+        const totalOrders = await Order.count();
+        
+        // Revenue calculation (sum of all delivered orders)
+        const revenueResult = await Order.findAll({
+            attributes: [
+                [require('sequelize').fn('SUM', require('sequelize').col('totalAmount')), 'totalRevenue']
+            ],
+            where: {
+                orderStatus: 'DELIVERED'
+            },
+            raw: true
+        });
+        
+        const totalRevenue = revenueResult[0]?.totalRevenue || 0;
+        
+        // Pending orders count
+        const pendingOrders = await Order.count({
+            where: { orderStatus: 'PENDING' }
+        });
+        
+        // Confirmed orders count
+        const confirmedOrders = await Order.count({
+            where: { orderStatus: 'CONFIRMED' }
+        });
+        
+        // Shipped orders count
+        const shippedOrders = await Order.count({
+            where: { orderStatus: 'SHIPPED' }
+        });
+        
+        // Delivered orders count
+        const deliveredOrders = await Order.count({
+            where: { orderStatus: 'DELIVERED' }
+        });
+        
+        // Low stock products (qty < 5)
+        const lowStockProducts = await Product.count({
+            where: {
+                qty: {
+                    [require('sequelize').Op.lt]: 5
+                }
+            }
+        });
+        
+        res.json({
+            success: true,
+            metrics: {
+                totalUsers,
+                totalProducts,
+                totalOrders,
+                totalRevenue: parseFloat(totalRevenue).toFixed(2),
+                pendingOrders,
+                confirmedOrders,
+                shippedOrders,
+                deliveredOrders,
+                lowStockProducts
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error', error: error.message });
+    }
+};
+
 module.exports = {
     addProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getDashboardMetrics
 };
