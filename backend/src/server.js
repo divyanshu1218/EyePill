@@ -76,9 +76,12 @@ app.get('/', (req, res) => {
 
 // Database Connection and Sync
 sequelize.authenticate()
-    .then(() => {
+    .then(async () => {
         console.log('MySQL Connected');
-        return sequelize.sync({ alter: true }); // Sync models (alter adds new columns)
+        if (process.env.NODE_ENV !== 'production') {
+            await sequelize.sync({ alter: true }); // Sync models only in development
+            console.log('Database Synced');
+        }
     })
     .catch(err => console.log('MySQL Connection Error:', err));
 
