@@ -24,9 +24,9 @@ router.get('/google/callback',
             expiresIn: '30d',
         });
 
-        // Redirect to frontend with token
-        // Note: In production, consider a safer way to pass the token than query params
-        res.redirect(`http://localhost:3000/login?token=${token}&user=${JSON.stringify({
+        // Redirect to frontend with token dynamically (falling back to localhost)
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+        res.redirect(`${frontendUrl}/login?token=${token}&user=${JSON.stringify({
             _id: req.user.id,
             username: req.user.username,
             email: req.user.email,

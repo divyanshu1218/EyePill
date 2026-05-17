@@ -3,6 +3,7 @@ const baseUrl = process.env.REACT_APP_API_BASE_URL || "/api";
 //auth url
 export const SIGNUP_URL = `${baseUrl}/auth/signup`;
 export const LOGIN_URL = `${baseUrl}/auth/login`;
+export const GOOGLE_AUTH_URL = `${baseUrl}/auth/google`;
 
 //products url
 export const PRODUCTS_URL = `${baseUrl}/products`;

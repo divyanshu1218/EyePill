@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import bannerHero from "../assets/bannerHero.jpg";
 import { Logo } from "../components";
 import { useAuthContext } from "../contexts";
+import { GOOGLE_AUTH_URL } from "../api/apiUrls";
 
 const Login = () => {
   const { loginHandler, token, loggingIn, handleGoogleLogin } = useAuthContext();
@@ -111,7 +112,7 @@ const Login = () => {
                   Login as a Guest
                 </button>
                 <a
-                  href="http://localhost:5000/api/auth/google"
+                  href={GOOGLE_AUTH_URL}
                   className="btn-primary w-2/3 text-lg text-center bg-red-600 hover:bg-red-700 border-none"
                 >
                   Login with Google
