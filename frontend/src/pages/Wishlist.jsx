@@ -1,7 +1,7 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import SingleProduct from "../components/products/SingleProduct";
-import { useAuthContext, useCartContext, useProductsContext, useWishlistContext } from "../contexts";
+import { useCartContext, useProductsContext, useWishlistContext } from "../contexts";
 import emptyWish from "../assets/empty-wish.gif";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { notify } from "../utils/utils";
