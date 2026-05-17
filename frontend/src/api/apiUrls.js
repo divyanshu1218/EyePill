@@ -1,4 +1,8 @@
-const baseUrl = process.env.REACT_APP_API_BASE_URL || "/api";
+let rawBase = process.env.REACT_APP_API_BASE_URL || "/api";
+if (rawBase.startsWith("http") && !rawBase.endsWith("/api")) {
+    rawBase = `${rawBase}/api`;
+}
+const baseUrl = rawBase;
 
 //auth url
 export const SIGNUP_URL = `${baseUrl}/auth/signup`;
