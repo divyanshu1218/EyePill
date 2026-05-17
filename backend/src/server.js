@@ -28,6 +28,7 @@ const xssSanitize = (req, res, next) => {
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1); // Trust Vercel's reverse proxy for correct https protocol resolution
 const PORT = process.env.PORT || 5000;
 
 // Security Middleware
