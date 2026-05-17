@@ -1,4 +1,5 @@
 const express = require('express');
+require('mysql2'); // Force Vercel to bundle the mysql2 driver
 const cors = require('cors');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
