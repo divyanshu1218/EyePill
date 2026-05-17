@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
 import emptyBag from "../assets/empty-shopping-bag.png";
 import { useCartContext } from "../contexts";
 import { CartItemCard } from "../components";
@@ -11,6 +12,7 @@ const Cart = () => {
 
   return (
     <div className="py-2 ">
+      <Helmet><title>Your Bag | EyePill</title></Helmet>
       {cart.length > 0 && (
         <h1 className="text-2xl font-bold p-3 ">Bag({cart.length})</h1>
       )}

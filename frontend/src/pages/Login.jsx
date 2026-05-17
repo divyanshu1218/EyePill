@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import bannerHero from "../assets/bannerHero.jpg";
@@ -43,6 +44,7 @@ const Login = () => {
   };
   return (
     <main className="grid  grid-rows-1 lg:grid-cols-2 w-full  h-screen m-auto">
+      <Helmet><title>Login | EyePill</title></Helmet>
       <section className=" hidden lg:block max-h-screen  rounded-lg">
         <img src={bannerHero} alt="" className="w-full h-full object-cover" />
       </section>

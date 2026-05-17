@@ -30,18 +30,27 @@ const getCart = async (req, res) => {
 const addToCart = async (req, res) => {
     const { product } = req.body;
     try {
+        // Check stock
+        const productRecord = await Product.findByPk(product.id);
+        if (!productRecord || productRecord.qty <= 0) {
+            return res.status(400).json({ success: false, message: 'Product is out of stock' });
+        }
+
         let cartItem = await CartItem.findOne({
             where: { userId: req.user.id, productId: product.id }
         });
 
         if (cartItem) {
+            if (cartItem.qty >= productRecord.qty) {
+                return res.status(400).json({ success: false, message: 'Maximum stock reached' });
+            }
             cartItem.qty += 1;
             await cartItem.save();
         } else {
             cartItem = await CartItem.create({
                 userId: req.user.id,
                 productId: product.id,
-                qty: 1
+                qty: product.qty || 1
             });
         }
 
@@ -78,6 +87,11 @@ const updateCartQty = async (req, res) => {
         }
 
         if (action.type === 'increment') {
+            // Check stock before incrementing
+            const productRecord = await Product.findByPk(req.params.productId);
+            if (productRecord && cartItem.qty >= productRecord.qty) {
+                return res.status(400).json({ success: false, message: 'Cannot exceed available stock' });
+            }
             cartItem.qty += 1;
         } else if (action.type === 'decrement') {
             if (cartItem.qty > 1) {

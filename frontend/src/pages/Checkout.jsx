@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { SummaryCard } from "../components";
 import Address from "../components/address/Address";
 import { useLocation, useNavigate } from "react-router";
@@ -21,6 +22,7 @@ const Checkout = () => {
 
   return (
     <>
+      <Helmet><title>Checkout | EyePill</title></Helmet>
       <div className="md:min-h-[80vh] flex justify-center items-center py-3">
         <main className="grid md:grid-cols-2 gap-10 w-full">
           <Modal

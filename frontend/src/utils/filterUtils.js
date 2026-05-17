@@ -3,6 +3,10 @@ export const sortByPrice = (type, data) => {
     return [...data].sort((a, b) => a.newPrice - b.newPrice);
   } else if (type === "high_to_low") {
     return [...data].sort((a, b) => b.newPrice - a.newPrice);
+  } else if (type === "newest") {
+    return [...data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  } else if (type === "popularity") {
+    return [...data].sort((a, b) => b.rating - a.rating);
   }
   return data;
 };
@@ -46,3 +50,10 @@ export const filterBySearch = (searchText, data) => {
     )
     : data;
 };
+
+export const filterByAvailability = (inStockOnly, data) => {
+  return inStockOnly
+    ? data.filter(({ qty }) => qty > 0)
+    : data;
+};
+

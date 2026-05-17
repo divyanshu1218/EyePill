@@ -10,8 +10,9 @@ const resetAdmin = async () => {
         await sequelize.authenticate();
         console.log('Database connected...');
 
-        const email = 'divyanshu@gmail.com';
-        const password = 'admin123';
+        const email = process.env.ADMIN_EMAIL || 'admin@eyepill.com';
+        const password = process.env.ADMIN_PASSWORD || 'admin123';
+        const username = process.env.ADMIN_USERNAME || 'admin_eyepill';
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -19,7 +20,7 @@ const resetAdmin = async () => {
         const [user, created] = await User.findOrCreate({
             where: { email },
             defaults: {
-                username: 'divyanshudivyanshu',
+                username,
                 email,
                 password: hashedPassword,
                 role: 'admin',
@@ -30,9 +31,9 @@ const resetAdmin = async () => {
 
         if (!created) {
             await user.update({ password: hashedPassword, role: 'admin' });
-            console.log('Admin password updated to: admin123');
+            console.log(`Admin user '${username}' (${email}) updated successfully.`);
         } else {
-            console.log('New Admin created with password: admin123');
+            console.log(`New Admin user '${username}' (${email}) created successfully.`);
         }
 
         process.exit();

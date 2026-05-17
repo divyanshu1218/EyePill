@@ -14,7 +14,7 @@ import {
 const FilterHeading = ({ text }) => <h2 className="text-lg font-bold mb-4 text-gray-800 uppercase tracking-widest">{text}</h2>;
 
 const Filters = ({ isFilterOpen, setIsFilterOpen }) => {
-  const { clearFilters } = useProductsContext();
+  const { clearFilters, applyFilters, filters } = useProductsContext();
 
   return (
     <AnimatePresence>
@@ -81,6 +81,23 @@ const Filters = ({ isFilterOpen, setIsFilterOpen }) => {
                     <Checkbox data={data} key={index} />
                   ))}
                 </div>
+              </section>
+
+              <section>
+                <FilterHeading text="Availability" />
+                <label className="flex items-center justify-between bg-gray-50 p-4 rounded-xl cursor-pointer">
+                  <span className="text-sm font-medium text-gray-700">In Stock Only</span>
+                  <div className="relative">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={filters.inStockOnly || false}
+                      onChange={(e) => applyFilters("inStockOnly", e.target.checked)}
+                    />
+                    <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-green-500 transition-colors"></div>
+                    <div className="absolute left-[2px] top-[2px] w-5 h-5 bg-white rounded-full shadow-sm transition-transform peer-checked:translate-x-5"></div>
+                  </div>
+                </label>
               </section>
 
               <section className="pb-10">

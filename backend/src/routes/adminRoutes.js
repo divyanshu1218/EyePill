@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { addProduct, updateProduct, deleteProduct, getDashboardMetrics } = require('../controllers/adminController');
+const { getAllUsers } = require('../controllers/adminUserController');
 const { protect } = require('../middleware/authMiddleware');
 const { admin } = require('../middleware/adminMiddleware');
 
@@ -10,6 +11,9 @@ router.use(admin);
 const upload = require('../middleware/uploadMiddleware');
 
 router.get('/dashboard-metrics', getDashboardMetrics);
+
+// User management
+router.get('/users', getAllUsers);
 
 router.post('/products', upload.fields([
     { name: 'image', maxCount: 1 },

@@ -1,4 +1,5 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { HiOutlineShoppingBag, HiOutlineShieldCheck } from "react-icons/hi";
 import { BsBookmarkHeart, BsFillBookmarkHeartFill, BsTruck, BsArrowRepeat, BsShop } from "react-icons/bs";
@@ -28,6 +29,7 @@ const ProductDetails = () => {
 
   const product = getProductById(productId);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedQty, setSelectedQty] = useState(1);
   const [pincode, setPincode] = useState("");
   const [isPincodeChecked, setIsPincodeChecked] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -46,12 +48,66 @@ const ProductDetails = () => {
   const colors = product?.colors || [];
   const sizes = product?.sizes || [];
   const reviews = product?.reviews || [];
+  const stockQty = product?.qty ?? 0;
+  const isOutOfStock = stockQty <= 0;
+  const isLowStock = stockQty > 0 && stockQty <= 5;
+
+  const handleQtyChange = useCallback((type) => {
+    if (type === 'increment' && selectedQty < stockQty) {
+      setSelectedQty(prev => prev + 1);
+    } else if (type === 'decrement' && selectedQty > 1) {
+      setSelectedQty(prev => prev - 1);
+    }
+  }, [selectedQty, stockQty]);
 
   const similarProducts = useMemo(() => {
     return allProducts
       .filter(p => p.category === product?.category && p.id !== product?.id)
       .slice(0, 4);
   }, [allProducts, product]);
+
+  const formattedDescription = useMemo(() => {
+    const desc = product?.description || "Designed for ultimate style and comfort. These high-quality frames feature a lightweight build and ergonomic design, making them perfect for all-day wear. The lenses provide 100% UV protection with enhanced clarity.";
+    
+    if (desc.includes("✅")) {
+      const parts = desc.split("✅").map(part => part.trim()).filter(part => part.length > 0);
+      
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {parts.map((part, idx) => {
+            let title = "";
+            let body = part;
+            const separatorIdx = part.search(/[–-]/);
+            if (separatorIdx !== -1) {
+              title = part.substring(0, separatorIdx).trim();
+              body = part.substring(separatorIdx + 1).trim();
+            }
+            
+            return (
+              <div 
+                key={idx}
+                className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex items-start gap-4"
+              >
+                <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center shrink-0 text-green-600 text-sm font-black shadow-sm">
+                  ✓
+                </div>
+                <div>
+                  {title && <h4 className="font-bold text-gray-900 text-sm mb-1 tracking-tight">{title}</h4>}
+                  <p className="text-gray-500 text-xs leading-relaxed">{body}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+    
+    return (
+      <p className="text-gray-600 leading-relaxed text-base bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        {desc}
+      </p>
+    );
+  }, [product?.description]);
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -77,7 +133,7 @@ const ProductDetails = () => {
       }
     } catch (err) {
       console.error(err);
-      notify("error", "Failed to add review");
+      notify("error", err.response?.data?.message || "Failed to add review");
     } finally {
       setIsSubmittingReview(false);
     }
@@ -98,6 +154,10 @@ const ProductDetails = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fadeIn">
+      <Helmet>
+        <title>{product.name} — {product.brand} | EyePill</title>
+        <meta name="description" content={product.description || `Buy ${product.name} by ${product.brand} at ₹${product.newPrice}. Shop premium eyewear at EyePill.`} />
+      </Helmet>
       {/* Breadcrumbs */}
       <nav className="flex mb-8 text-sm text-gray-500 overflow-x-auto whitespace-nowrap pb-2">
         <span>Home</span>
@@ -202,6 +262,26 @@ const ProductDetails = () => {
                 ({Math.round(((product.price - product.newPrice) / product.price) * 100)}% OFF)
               </span>
             </div>
+
+            {/* Stock Status */}
+            <div className="pt-2">
+              {isOutOfStock ? (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-600 text-sm font-bold">
+                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                  Out of Stock
+                </span>
+              ) : isLowStock ? (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-600 text-sm font-bold">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                  Only {stockQty} left — Hurry!
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-600 text-sm font-bold">
+                  <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                  In Stock
+                </span>
+              )}
+            </div>
           </header>
 
           {/* Offer Banner */}
@@ -280,38 +360,74 @@ const ProductDetails = () => {
             )}
           </div>
 
+          {/* Quantity Selector */}
+          {!isOutOfStock && (
+            <div className="space-y-3">
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Quantity</h3>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => handleQtyChange('decrement')}
+                  disabled={selectedQty <= 1}
+                  className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-lg font-bold hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  −
+                </button>
+                <span className="w-12 text-center text-xl font-black text-gray-900">{selectedQty}</span>
+                <button
+                  onClick={() => handleQtyChange('increment')}
+                  disabled={selectedQty >= stockQty}
+                  className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-lg font-bold hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  +
+                </button>
+                {selectedQty >= stockQty && (
+                  <span className="text-xs text-amber-600 font-medium">Max available</span>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* CTA Buttons */}
           <div className="flex gap-4 pt-4">
             <button
-              disabled={disableCart}
+              disabled={disableCart || isOutOfStock}
               onClick={() => {
                 if (!token) {
                   navigate("/login", { state: { from: location.pathname } });
                   notify("warn", "Please Login to continue");
                 } else {
                   if (!product.inCart) {
-                    addProductToCart(product);
+                    addProductToCart({ ...product, qty: selectedQty });
                   } else {
                     navigate("/cart");
                   }
                 }
               }}
-              className="flex-1 py-4 bg-white border-2 border-gray-900 text-gray-900 rounded-2xl font-black text-lg hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+              className={`flex-1 py-4 rounded-2xl font-black text-lg transition-all flex items-center justify-center gap-2 ${
+                isOutOfStock
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed border-2 border-gray-200"
+                  : "bg-white border-2 border-gray-900 text-gray-900 hover:bg-gray-50"
+              }`}
             >
               <HiOutlineShoppingBag className="text-2xl" />
-              {product.inCart ? "Go to Bag" : "Add to Bag"}
+              {isOutOfStock ? "Out of Stock" : product.inCart ? "Go to Bag" : "Add to Bag"}
             </button>
             <button
+              disabled={isOutOfStock}
               onClick={() => {
                 if (!token) {
                   navigate("/login", { state: { from: location.pathname } });
                   notify("warn", "Please Login to continue");
                 } else {
-                  if (!product.inCart) addProductToCart(product);
+                  if (!product.inCart) addProductToCart({ ...product, qty: selectedQty });
                   navigate("/cart");
                 }
               }}
-              className="flex-1 py-4 bg-gray-900 text-white rounded-2xl font-black text-lg hover:bg-gray-800 transition-all shadow-xl shadow-gray-900/20"
+              className={`flex-1 py-4 rounded-2xl font-black text-lg transition-all ${
+                isOutOfStock
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-gray-900 text-white hover:bg-gray-800 shadow-xl shadow-gray-900/20"
+              }`}
             >
               Buy Now
             </button>
@@ -343,10 +459,8 @@ const ProductDetails = () => {
                 </li>
               </ul>
             </div>
-            <div className="md:col-span-2 space-y-4">
-              <p className="text-gray-600 leading-relaxed text-lg">
-                {product.description || "Designed for ultimate style and comfort. These high-quality frames feature a lightweight build and ergonomic design, making them perfect for all-day wear. The lenses provide 100% UV protection with enhanced clarity."}
-              </p>
+            <div className="md:col-span-2 space-y-6">
+              {formattedDescription}
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-xl">
                   <BsArrowRepeat className="text-blue-600 text-xl" />

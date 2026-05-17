@@ -97,6 +97,7 @@ const AuthContextProvider = ({ children }) => {
         signupHandler,
         signingUp,
         userInfo,
+        setUserInfo,
         handleGoogleLogin,
       }}
     >

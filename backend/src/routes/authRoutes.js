@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { signup, login } = require('../controllers/authController');
+const { signup, login, getProfile, updateProfile } = require('../controllers/authController');
+const { protect } = require('../middleware/authMiddleware');
 
 router.post('/signup', signup);
 router.post('/login', login);
+
+// Profile routes
+router.get('/profile', protect, getProfile);
+router.put('/profile', protect, updateProfile);
 
 // Google Auth Routes
 const passport = require('passport');
@@ -24,7 +29,8 @@ router.get('/google/callback',
         res.redirect(`http://localhost:3000/login?token=${token}&user=${JSON.stringify({
             _id: req.user.id,
             username: req.user.username,
-            email: req.user.email
+            email: req.user.email,
+            role: req.user.role
         })}`);
     }
 );

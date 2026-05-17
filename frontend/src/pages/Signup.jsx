@@ -1,4 +1,5 @@
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import bannerHero from "../assets/bannerHero.jpg";
@@ -47,6 +48,7 @@ const Signup = () => {
     !confirmPassword;
   return (
     <main className="grid  grid-rows-1 md:grid-cols-2 w-full  h-screen m-auto ">
+      <Helmet><title>Sign Up | EyePill</title></Helmet>
       <section className=" hidden md:block max-h-screen  rounded-lg">
         <img src={bannerHero} alt="" className="w-full h-full object-cover" />
       </section>

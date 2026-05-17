@@ -12,6 +12,7 @@ export const initialState = {
     rating: "",
     sortBy: "",
     searchText: "",
+    inStockOnly: false,
   },
   addressList: [
     {
@@ -77,6 +78,7 @@ export const productsReducer = (state, action) => {
           rating: "",
           sortBy: "",
           searchText: "",
+          inStockOnly: false,
         },
       };
 

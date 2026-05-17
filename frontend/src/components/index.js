@@ -22,3 +22,5 @@ export { default as AddressForm } from "./address/AddressForm";
 export { default as Loader } from "./loader/Loader";
 export { default as Features } from "./features/Features";
 export { default as Newsletter } from "./newsletter/Newsletter";
+export { default as Deals } from "./deals/Deals";
+export { default as Testimonials } from "./testimonials/Testimonials";

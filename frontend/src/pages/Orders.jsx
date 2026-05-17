@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate } from "react-router";
 import { useAuthContext } from "../contexts";
-import axios from "axios";
 import { notify } from "../utils/utils";
 import orderSuccess from "../assets/success-order.gif";
 import { BsBoxSeam, BsCheckCircle, BsTruck, BsXCircle } from "react-icons/bs";
+import { getUserOrdersService, cancelOrderService } from "../api/apiServices";
 
 const Orders = () => {
   const location = useLocation();
@@ -34,9 +35,7 @@ const Orders = () => {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("/api/orders", {
-          headers: { authorization: token }
-        });
+        const response = await getUserOrdersService(token);
 
         if (response.data.success) {
           setOrders(response.data.orders);
@@ -59,11 +58,7 @@ const Orders = () => {
     }
 
     try {
-      const response = await axios.put(
-        `/api/orders/${orderId}/cancel`,
-        {},
-        { headers: { authorization: token } }
-      );
+      const response = await cancelOrderService(orderId, token);
 
       if (response.data.success) {
         notify("success", "Order cancelled successfully");
@@ -115,6 +110,7 @@ const Orders = () => {
   if (showSuccessModal) {
     return (
       <div className="min-h-[80vh] flex justify-center items-center py-3">
+        <Helmet><title>Order Confirmed | EyePill</title></Helmet>
         <div className="bg-white h-1/2 w-96 m-auto rounded-md flex flex-col items-center justify-center p-5 modalShadow">
           <div className="w-64 flex items-center justify-center">
             <img
@@ -180,6 +176,7 @@ const Orders = () => {
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+      <Helmet><title>My Orders | EyePill</title></Helmet>
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">My Orders</h1>
 

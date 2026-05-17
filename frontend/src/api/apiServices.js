@@ -9,6 +9,7 @@ import {
   ORDERS_URL,
   ORDERS_VERIFY_PAYMENT_URL,
   ADMIN_DASHBOARD_METRICS_URL,
+  REVIEWS_URL,
 } from "./apiUrls";
 
 export const loginService = (email, password) =>
@@ -17,8 +18,8 @@ export const loginService = (email, password) =>
 export const signupService = (username, email, password) =>
   axios.post(SIGNUP_URL, { username, email, password });
 
-export const getAllProductsService = (page = 1, limit = 12) =>
-  axios.get(PRODUCTS_URL, { params: { page, limit } });
+export const getAllProductsService = () =>
+  axios.get(PRODUCTS_URL);
 
 export const getProductByIdService = (productId) =>
   axios.get(`${PRODUCTS_URL}/${productId}`);
@@ -92,7 +93,7 @@ export const getAllCategoriesService = () => axios.get(CATEGORIES_URL);
 
 export const postAddReviewService = (productId, rating, comment, token) =>
   axios.post(
-    "/api/reviews",
+    REVIEWS_URL,
     { productId, rating, comment },
     {
       headers: {

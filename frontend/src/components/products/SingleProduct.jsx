@@ -8,7 +8,7 @@ import {
 } from "../../contexts";
 import { useLocation, useNavigate } from "react-router";
 import { notify } from "../../utils/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
 const SingleProduct = ({ product }) => {
@@ -44,7 +44,7 @@ const SingleProduct = ({ product }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       whileHover={{ y: -5 }}
-      className="flex flex-col bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer group hover:shadow-xl transition-all duration-300"
+      className="flex flex-col bg-white rounded-2xl shadow-sm border border-gray-100 cursor-pointer group hover:shadow-xl transition-all duration-300"
     >
       <div
         className="relative aspect-[4/3] bg-gray-50 flex items-center justify-center p-8 overflow-hidden"
@@ -67,7 +67,7 @@ const SingleProduct = ({ product }) => {
         
         <button
           disabled={disableWish}
-          className="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-colors"
+          className="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-colors z-20"
           onClick={(e) => {
             e.stopPropagation();
             if (!token) {
@@ -89,7 +89,7 @@ const SingleProduct = ({ product }) => {
           )}
         </button>
 
-        <div className="absolute bottom-4 left-4">
+        <div className="absolute bottom-4 left-4 z-20">
            <span className="flex items-center gap-1 bg-white/80 backdrop-blur-sm px-2 py-1 rounded-full text-[10px] font-bold text-gray-700 shadow-sm">
                 {product.rating} <GiRoundStar className="text-yellow-400" />
            </span>

@@ -9,27 +9,40 @@ passport.use(new GoogleStrategy({
 },
     async (accessToken, refreshToken, profile, done) => {
         try {
-            // Check if user exists
+            const email = profile.emails[0].value;
+            const isAdminEmail = process.env.ADMIN_EMAIL && email.toLowerCase() === process.env.ADMIN_EMAIL.toLowerCase();
+
+            // Check if user exists by Google ID
             let user = await User.findOne({ where: { googleId: profile.id } });
 
             if (user) {
+                // Ensure admin role is correct
+                if (isAdminEmail && user.role !== 'admin') {
+                    user.role = 'admin';
+                    await user.save();
+                }
                 return done(null, user);
             }
 
-            // If not, check if email exists (link account)
-            user = await User.findOne({ where: { email: profile.emails[0].value } });
+            // If not, check if email exists (link Google to existing email account)
+            user = await User.findOne({ where: { email } });
 
             if (user) {
                 user.googleId = profile.id;
+                if (isAdminEmail) {
+                    user.role = 'admin';
+                }
                 await user.save();
                 return done(null, user);
             }
 
             // Create new user
+            const role = isAdminEmail ? 'admin' : 'user';
             user = await User.create({
                 username: profile.displayName,
-                email: profile.emails[0].value,
+                email: email,
                 googleId: profile.id,
+                role: role,
                 password: null // No password for Google users
             });
 

@@ -26,28 +26,30 @@ exports.addReview = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Product not found' });
         }
 
-        // CHECK: User must have purchased this product
-        // Find if user has a delivered order containing this product
-        const purchasedItem = await OrderItem.findOne({
-            where: { 
-                productId: productId 
-            },
-            include: [
-                {
-                    model: Order,
-                    where: { 
-                        userId: userId,
-                        orderStatus: 'DELIVERED' // Only delivered orders can review
+        // CHECK: User must have purchased this product (Admins can bypass)
+        const isAdmin = req.user && req.user.role === 'admin';
+        if (!isAdmin) {
+            const purchasedItem = await OrderItem.findOne({
+                where: { 
+                    productId: productId 
+                },
+                include: [
+                    {
+                        model: Order,
+                        where: { 
+                            userId: userId,
+                            orderStatus: 'DELIVERED' // Only delivered orders can review
+                        }
                     }
-                }
-            ]
-        });
-
-        if (!purchasedItem) {
-            return res.status(403).json({ 
-                success: false, 
-                message: 'You can only review products you have purchased and received' 
+                ]
             });
+
+            if (!purchasedItem) {
+                return res.status(403).json({ 
+                    success: false, 
+                    message: 'You can only review products you have purchased and received' 
+                });
+            }
         }
 
         // Check if user already reviewed this product
