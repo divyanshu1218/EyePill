@@ -10,7 +10,6 @@ const Wishlist = () => {
   const { wishlist, deleteProductFromWishlist, disableWish } = useWishlistContext();
   const { addProductToCart, disableCart } = useCartContext();
   const { isInCart } = useProductsContext();
-  const { token } = useAuthContext();
 
   const handleMoveToCart = (product) => {
     if (!isInCart(product.id)) {

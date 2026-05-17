@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { AiOutlinePlus, AiOutlineCheck } from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 const TrendingCard = ({ product }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

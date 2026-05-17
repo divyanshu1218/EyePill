@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
 import { HiOutlineShoppingBag, HiOutlineUser } from "react-icons/hi";
-import { MdOutlineExplore } from "react-icons/md";
-
 import { RxHamburgerMenu } from "react-icons/rx";
-import defaultUser from "../../assets/defaultUser.png";
 import MenuDropdown from "./MenuDropdown";
 import ProfileDropdown from "./ProfileDropdown";
 import Logo from "./Logo";

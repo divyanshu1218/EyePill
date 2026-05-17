@@ -5,7 +5,7 @@ import axios from "axios";
 import { notify } from "../utils/utils";
 import { toast } from "react-toastify";
 import { getAdminDashboardMetricsService } from "../api/apiServices";
-import { BsBoxSeam, BsPeople, BsShop, BsCurrencyRupee, BsTruck, BsCheckCircle, BsXCircle, BsClock } from "react-icons/bs";
+import { BsPeople, BsShop, BsCurrencyRupee, BsTruck, BsCheckCircle, BsXCircle, BsClock } from "react-icons/bs";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 
 const TABS = [
