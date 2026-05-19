@@ -12,6 +12,21 @@ import {
   REVIEWS_URL,
 } from "./apiUrls";
 
+// Interceptor to auto-logout on stale/invalid tokens (401 Unauthorized)
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      if (localStorage.getItem("token")) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userInfo");
+        window.location.href = "/login"; // Force redirect to clear stale state
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const loginService = (email, password) =>
   axios.post(LOGIN_URL, { email, password });
 

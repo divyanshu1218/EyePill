@@ -19,10 +19,13 @@ const addProduct = async (req, res) => {
 
         if (req.files) {
             if (req.files['image']) {
-                image = `/uploads/${path.basename(req.files['image'][0].path)}`;
+                const file = req.files['image'][0];
+                image = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
             }
             if (req.files['additionalImages']) {
-                additionalImages = req.files['additionalImages'].map(file => `/uploads/${path.basename(file.path)}`);
+                additionalImages = req.files['additionalImages'].map(file => {
+                    return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+                });
             }
         }
 
@@ -73,11 +76,14 @@ const updateProduct = async (req, res) => {
 
         if (req.files) {
             if (req.files['image']) {
-                updateData.image = `/uploads/${path.basename(req.files['image'][0].path)}`;
+                const file = req.files['image'][0];
+                updateData.image = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
             }
             if (req.files['additionalImages']) {
-                const newAdditional = req.files['additionalImages'].map(file => `/uploads/${path.basename(file.path)}`);
-                // Append or replace? Let's replace for simplicity in editing
+                const newAdditional = req.files['additionalImages'].map(file => {
+                    return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+                });
+                // Replace completely
                 updateData.additionalImages = newAdditional;
             }
         }
