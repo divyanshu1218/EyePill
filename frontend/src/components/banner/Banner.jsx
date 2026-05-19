@@ -35,7 +35,7 @@ const Banner = ({ catRef }) => {
           animate={{ opacity: 1, y: 0 }}
           className="inline-block px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-[0.2em] mb-6"
         >
-          New Collection 2024
+          New Collection 2026
         </motion.div>
         <motion.h1 
           initial={{ opacity: 0, x: -50 }}
