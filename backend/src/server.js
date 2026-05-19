@@ -81,8 +81,11 @@ sequelize.authenticate()
     .then(async () => {
         console.log('MySQL Connected');
         if (process.env.NODE_ENV !== 'production') {
-            await sequelize.sync({ alter: true }); // Sync models only in development
-            console.log('Database Synced');
+            await sequelize.sync({ alter: true }); // Sync and alter models in development
+            console.log('Database Synced (altered)');
+        } else {
+            await sequelize.sync(); // Safe sync: CREATE TABLE IF NOT EXISTS in production
+            console.log('Database Synced (safe)');
         }
     })
     .catch(err => console.log('MySQL Connection Error:', err));
