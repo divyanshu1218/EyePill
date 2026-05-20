@@ -23,7 +23,12 @@ const SingleProduct = ({ product }) => {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
+  const [imageErrors, setImageErrors] = useState({});
   const allImages = [product.image, ...(product.additionalImages || [])];
+
+  const handleImageError = (index) => {
+    setImageErrors(prev => ({ ...prev, [index]: true }));
+  };
 
   useEffect(() => {
     let intervalId;
@@ -58,10 +63,11 @@ const SingleProduct = ({ product }) => {
           <img
             key={index}
             src={imgSrc}
+            onError={() => handleImageError(index)}
             alt={`${product.name} preview ${index}`}
             className={`absolute inset-0 w-full h-full object-contain p-8 transition-all duration-500 group-hover:scale-110 ${
               index === currentImageIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-            }`}
+            } ${imageErrors[index] ? "hidden" : ""}`}
           />
         ))}
         

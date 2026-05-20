@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { BsBookmarkHeart, BsFillBookmarkHeartFill } from "react-icons/bs";
 import {
@@ -15,6 +15,7 @@ const CartItemCard = ({ product, isSearch, setSearch }) => {
     useCartContext();
   const { addProductToWishlist, deleteProductFromWishlist, disableWish } =
     useWishlistContext();
+  const [imageError, setImageError] = useState(false);
 
   const updateHandler = (type) => {
     if (type === "increment" && product.quantity > product.qty) {
@@ -43,7 +44,8 @@ const CartItemCard = ({ product, isSearch, setSearch }) => {
             className={` bg-black/[0.075] ${isSearch ? "h-14 w-14 " : "h-28 w-28"
               } rounded-md flex items-center`}
           >
-            <img src={product.image} alt="" className="object-fit w-full" />
+            {!imageError && <img src={product.image} alt="" onError={() => setImageError(true)} className="object-fit w-full" />}
+            {imageError && <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">No image</div>}
           </div>
           <div className="flex flex-col gap-3">
             <h2 className="text-xl py-3 font-semibold">{product.name}</h2>
