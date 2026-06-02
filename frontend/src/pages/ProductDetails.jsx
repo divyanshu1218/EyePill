@@ -14,7 +14,7 @@ import {
   useWishlistContext,
 } from "../contexts";
 import { StarRating, TrendingCard } from "../components";
-import { notify } from "../utils/utils";
+import { notify, getImageUrl } from "../utils/utils";
 import { getProductByIdService, postAddReviewService } from "../api/apiServices";
 
 const ProductDetails = () => {
@@ -42,7 +42,7 @@ const ProductDetails = () => {
     if (product?.additionalImages && Array.isArray(product.additionalImages)) {
       imgs.push(...product.additionalImages);
     }
-    return imgs.filter(img => img);
+    return imgs.filter(img => img).map(getImageUrl);
   }, [product]);
 
   const colors = product?.colors || [];
@@ -178,7 +178,7 @@ const ProductDetails = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.1 }}
                 transition={{ duration: 0.4 }}
-                src={images[selectedImage] || product.image}
+                src={images[selectedImage] || getImageUrl(product.image)}
                 alt={product.name}
                 className="max-h-full w-auto object-contain drop-shadow-2xl"
               />

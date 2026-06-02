@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useState, useEffect } from "react";
+import { getImageUrl } from "../../utils/utils";
 
 const TrendingCard = ({ product }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [imageErrors, setImageErrors] = useState({});
-  const allImages = [product.image, ...(product.additionalImages || [])];
+  const allImages = [product.image, ...(product.additionalImages || [])].map(getImageUrl);
 
   const handleImageError = (index) => {
     setImageErrors(prev => ({ ...prev, [index]: true }));

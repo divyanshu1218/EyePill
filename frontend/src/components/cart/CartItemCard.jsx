@@ -7,6 +7,7 @@ import {
   useWishlistContext,
 } from "../../contexts";
 import { useNavigate } from "react-router";
+import { getImageUrl } from "../../utils/utils";
 
 const CartItemCard = ({ product, isSearch, setSearch }) => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const CartItemCard = ({ product, isSearch, setSearch }) => {
             className={` bg-black/[0.075] ${isSearch ? "h-14 w-14 " : "h-28 w-28"
               } rounded-md flex items-center`}
           >
-            {!imageError && <img src={product.image} alt="" onError={() => setImageError(true)} className="object-fit w-full" />}
+            {!imageError && <img src={getImageUrl(product.image)} alt="" onError={() => setImageError(true)} className="object-fit w-full" />}
             {imageError && <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">No image</div>}
           </div>
           <div className="flex flex-col gap-3">

@@ -23,3 +23,22 @@ export const notify = (type, message, delay) => {
     });
   }
 };
+
+export const getImageUrl = (imagePath) => {
+  if (!imagePath) return "";
+  if (imagePath.startsWith("http") || imagePath.startsWith("data:")) {
+    return imagePath;
+  }
+  const apiBase = process.env.REACT_APP_API_BASE_URL;
+  let backendUrl = "";
+  if (apiBase) {
+    backendUrl = apiBase.replace(/\/api$/, "");
+  } else if (
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+  ) {
+    backendUrl = "http://localhost:5000";
+  }
+  return `${backendUrl}${imagePath.startsWith("/") ? "" : "/"}${imagePath}`;
+};
+

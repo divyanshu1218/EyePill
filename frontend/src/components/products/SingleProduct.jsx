@@ -7,7 +7,7 @@ import {
   useWishlistContext,
 } from "../../contexts";
 import { useLocation, useNavigate } from "react-router";
-import { notify } from "../../utils/utils";
+import { notify, getImageUrl } from "../../utils/utils";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
@@ -24,7 +24,7 @@ const SingleProduct = ({ product }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [imageErrors, setImageErrors] = useState({});
-  const allImages = [product.image, ...(product.additionalImages || [])];
+  const allImages = [product.image, ...(product.additionalImages || [])].map(getImageUrl);
 
   const handleImageError = (index) => {
     setImageErrors(prev => ({ ...prev, [index]: true }));

@@ -1,7 +1,7 @@
 import React from "react";
 import { useCartContext, useProductsContext } from "../../contexts";
 import PriceDetailsCard from "./PriceDetailsCard";
-import { notify } from "../../utils/utils";
+import { notify, getImageUrl } from "../../utils/utils";
 
 const SummaryCard = ({ setShowModal }) => {
   const { addressList, currentAddress } = useProductsContext();
@@ -21,7 +21,7 @@ const SummaryCard = ({ setShowModal }) => {
           <div className="flex  items-center flex-wrap gap-2 w-full">
             <div className="flex flex-1 items-center gap-2">
               <div className=" bg-black/[0.075] h-16 w-16 rounded-md flex items-center">
-                <img src={item.image} alt="" className="object-fit w-full" />
+                <img src={getImageUrl(item.image)} alt="" className="object-fit w-full" />
               </div>
               <div className="">
                 <h2>{item.name}</h2>
