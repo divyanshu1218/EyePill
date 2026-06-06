@@ -39,6 +39,11 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         defaultValue: 'user'
     },
+    tokenVersion: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
     phone: {
         type: DataTypes.STRING,
         allowNull: true

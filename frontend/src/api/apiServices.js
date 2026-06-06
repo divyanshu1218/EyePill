@@ -12,6 +12,10 @@ import {
   REVIEWS_URL,
 } from "./apiUrls";
 
+const authHeader = (token) => ({
+  authorization: token?.startsWith('Bearer ') ? token : `Bearer ${token}`,
+});
+
 // Interceptor to auto-logout on stale/invalid tokens (401 Unauthorized)
 axios.interceptors.response.use(
   (response) => response,
@@ -41,9 +45,7 @@ export const getProductByIdService = (productId) =>
 
 export const getCartItemsService = (token) =>
   axios.get(CART_URL, {
-    headers: {
-      authorization: token,
-    },
+    headers: authHeader(token),
   });
 
 export const postAddProductToCartService = (product, token) =>
@@ -51,9 +53,7 @@ export const postAddProductToCartService = (product, token) =>
     CART_URL,
     { product },
     {
-      headers: {
-        authorization: token,
-      },
+      headers: authHeader(token),
     }
   );
 
@@ -66,24 +66,18 @@ export const postUpdateProductQtyCartService = (productId, type, token) =>
       },
     },
     {
-      headers: {
-        authorization: token,
-      },
+      headers: authHeader(token),
     }
   );
 
 export const deleteProductFromCartService = (productId, token) =>
   axios.delete(`${CART_URL}/${productId}`, {
-    headers: {
-      authorization: token,
-    },
+    headers: authHeader(token),
   });
 
 export const getWishlistItemsService = (token) =>
   axios.get(WISHLIST_URL, {
-    headers: {
-      authorization: token,
-    },
+    headers: authHeader(token),
   });
 
 export const postAddProductToWishlistService = (product, token) =>
@@ -91,17 +85,13 @@ export const postAddProductToWishlistService = (product, token) =>
     WISHLIST_URL,
     { product },
     {
-      headers: {
-        authorization: token,
-      },
+      headers: authHeader(token),
     }
   );
 
 export const deleteProductFromWishlistService = (productId, token) =>
   axios.delete(`${WISHLIST_URL}/${productId}`, {
-    headers: {
-      authorization: token,
-    },
+    headers: authHeader(token),
   });
 
 export const getAllCategoriesService = () => axios.get(CATEGORIES_URL);
@@ -111,39 +101,29 @@ export const postAddReviewService = (productId, rating, comment, token) =>
     REVIEWS_URL,
     { productId, rating, comment },
     {
-      headers: {
-        authorization: token,
-      },
+      headers: authHeader(token),
     }
   );
 
 // Order services
 export const createOrderService = (orderData, token) =>
   axios.post(ORDERS_URL, orderData, {
-    headers: {
-      authorization: token,
-    },
+    headers: authHeader(token),
   });
 
 export const verifyPaymentService = (paymentData, token) =>
   axios.post(ORDERS_VERIFY_PAYMENT_URL, paymentData, {
-    headers: {
-      authorization: token,
-    },
+    headers: authHeader(token),
   });
 
 export const getUserOrdersService = (token) =>
   axios.get(ORDERS_URL, {
-    headers: {
-      authorization: token,
-    },
+    headers: authHeader(token),
   });
 
 export const getOrderByIdService = (orderId, token) =>
   axios.get(`${ORDERS_URL}/${orderId}`, {
-    headers: {
-      authorization: token,
-    },
+    headers: authHeader(token),
   });
 
 export const cancelOrderService = (orderId, token) =>
@@ -151,16 +131,12 @@ export const cancelOrderService = (orderId, token) =>
     `${ORDERS_URL}/${orderId}/cancel`,
     {},
     {
-      headers: {
-        authorization: token,
-      },
+      headers: authHeader(token),
     }
   );
 
 // Admin services
 export const getAdminDashboardMetricsService = (token) =>
   axios.get(ADMIN_DASHBOARD_METRICS_URL, {
-    headers: {
-      authorization: token,
-    },
+    headers: authHeader(token),
   });

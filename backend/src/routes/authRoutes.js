@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { signup, login, getProfile, updateProfile } = require('../controllers/authController');
+const { signup, login, getProfile, updateProfile, logout, generateToken } = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
 
 router.post('/signup', signup);
 router.post('/login', login);
+router.post('/logout', protect, logout);
 
 // Profile routes
 router.get('/profile', protect, getProfile);
@@ -20,9 +21,7 @@ router.get('/google/callback',
     passport.authenticate('google', { failureRedirect: '/login', session: false }),
     (req, res) => {
         // Generate token
-        const token = jwt.sign({ id: req.user.id }, process.env.JWT_SECRET, {
-            expiresIn: '30d',
-        });
+        const token = generateToken(req.user.id, req.user.tokenVersion);
 
         // Redirect to frontend with token dynamically (falling back to localhost)
         const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';

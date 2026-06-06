@@ -2,10 +2,17 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: '30d',
-    });
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
+
+const generateToken = (id, tokenVersion = 0) => {
+    return jwt.sign(
+        { id, tokenVersion },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: JWT_EXPIRES_IN,
+            algorithm: 'HS256',
+        }
+    );
 };
 
 // @desc    Register new user
@@ -55,7 +62,7 @@ const signup = async (req, res) => {
                 username: user.username,
                 email: user.email,
                 role: user.role,
-                token: generateToken(user.id),
+                token: generateToken(user.id, user.tokenVersion),
             });
         } else {
             res.status(400).json({ 
@@ -91,6 +98,14 @@ const login = async (req, res) => {
 
         const user = await User.findOne({ where: { email } });
 
+        if (user && !user.password) {
+            return res.status(401).json({
+                success: false,
+                message: 'This account uses Google login. Please sign in with Google.',
+                errors: ['Please sign in with Google']
+            });
+        }
+
         if (user && (await bcrypt.compare(password, user.password))) {
             // Auto-promote to admin if email matches process.env.ADMIN_EMAIL
             const isAdminEmail = process.env.ADMIN_EMAIL && email.toLowerCase() === process.env.ADMIN_EMAIL.toLowerCase();
@@ -104,7 +119,7 @@ const login = async (req, res) => {
                 username: user.username,
                 email: user.email,
                 role: user.role,
-                token: generateToken(user.id),
+                token: generateToken(user.id, user.tokenVersion),
             });
         } else {
             res.status(401).json({ 
@@ -191,9 +206,32 @@ const updateProfile = async (req, res) => {
     }
 };
 
+const logout = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.user.id);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        user.tokenVersion += 1;
+        await user.save();
+
+        res.json({ success: true, message: 'Logged out successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'Server Error',
+            errors: [error.message]
+        });
+    }
+};
+
 module.exports = {
     signup,
     login,
     getProfile,
     updateProfile,
+    logout,
+    generateToken,
 };
