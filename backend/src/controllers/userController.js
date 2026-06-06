@@ -1,4 +1,5 @@
 const { CartItem, WishlistItem, Product } = require('../models/associations');
+const { normalizeProductImages, normalizeProductsArray } = require('../utils/imageConverter');
 
 // @desc    Get user cart
 // @route   GET /api/user/cart
@@ -11,12 +12,13 @@ const getCart = async (req, res) => {
         });
 
         // Map to format frontend expects
-        const formattedCart = cartItems.map(item => ({
+        let formattedCart = cartItems.map(item => ({
             ...item.Product.toJSON(),
             qty: item.qty,
             cartItemId: item.id
         }));
 
+        formattedCart = normalizeProductsArray(formattedCart);
         res.json({ success: true, cart: formattedCart });
     } catch (error) {
         console.error(error);
@@ -54,17 +56,21 @@ const addToCart = async (req, res) => {
             });
         }
 
-        const updatedCart = await CartItem.findAll({
+        let updatedCart = await CartItem.findAll({
             where: { userId: req.user.id },
             include: [{ model: Product }]
         });
 
+        updatedCart = updatedCart.map(item => ({
+            ...item.Product.toJSON(),
+            qty: item.qty
+        }));
+
+        updatedCart = normalizeProductsArray(updatedCart);
+
         res.status(201).json({ 
             success: true, 
-            cart: updatedCart.map(item => ({
-                ...item.Product.toJSON(),
-                qty: item.qty
-            }))
+            cart: updatedCart
         });
     } catch (error) {
         console.error(error);
@@ -116,17 +122,21 @@ const removeFromCart = async (req, res) => {
             where: { userId: req.user.id, productId: req.params.productId }
         });
 
-        const updatedCart = await CartItem.findAll({
+        let updatedCart = await CartItem.findAll({
             where: { userId: req.user.id },
             include: [{ model: Product }]
         });
 
+        updatedCart = updatedCart.map(item => ({
+            ...item.Product.toJSON(),
+            qty: item.qty
+        }));
+
+        updatedCart = normalizeProductsArray(updatedCart);
+
         res.json({ 
             success: true, 
-            cart: updatedCart.map(item => ({
-                ...item.Product.toJSON(),
-                qty: item.qty
-            }))
+            cart: updatedCart
         });
     } catch (error) {
         console.error(error);
@@ -141,7 +151,9 @@ const getWishlist = async (req, res) => {
             where: { userId: req.user.id },
             include: [{ model: Product }]
         });
-        res.json({ success: true, wishlist: items.map(i => i.Product) });
+        let wishlist = items.map(i => i.Product);
+        wishlist = normalizeProductsArray(wishlist);
+        res.json({ success: true, wishlist });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Server Error' });

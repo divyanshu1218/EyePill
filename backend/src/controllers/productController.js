@@ -1,4 +1,5 @@
 const { Product, Review, User } = require('../models/associations');
+const { normalizeProductImages, normalizeProductsArray } = require('../utils/imageConverter');
 
 exports.getAllProducts = async (req, res) => {
     try {
@@ -22,7 +23,8 @@ exports.getAllProducts = async (req, res) => {
             queryOptions.offset = offset;
 
             const totalCount = await Product.count();
-            const products = await Product.findAll(queryOptions);
+            let products = await Product.findAll(queryOptions);
+            products = normalizeProductsArray(products);
             const totalPages = Math.ceil(totalCount / limit);
 
             return res.status(200).json({ 
@@ -40,7 +42,8 @@ exports.getAllProducts = async (req, res) => {
         }
 
         // No pagination — return all products
-        const products = await Product.findAll(queryOptions);
+        let products = await Product.findAll(queryOptions);
+        products = normalizeProductsArray(products);
         res.status(200).json({ success: true, products });
     } catch (err) {
         console.error(err);
@@ -50,7 +53,7 @@ exports.getAllProducts = async (req, res) => {
 
 exports.getProductById = async (req, res) => {
     try {
-        const product = await Product.findByPk(req.params.productId, {
+        let product = await Product.findByPk(req.params.productId, {
             include: [
                 {
                     model: Review,
@@ -62,6 +65,7 @@ exports.getProductById = async (req, res) => {
         if (!product) {
             return res.status(404).json({ success: false, message: 'Product not found' });
         }
+        product = normalizeProductImages(product);
         res.status(200).json({ success: true, product });
     } catch (err) {
         console.error(err);
