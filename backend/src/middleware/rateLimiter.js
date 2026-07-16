@@ -19,7 +19,7 @@ const generalLimiter = rateLimit({
 const authLimiter = rateLimit({
     ...sharedConfig,
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5,
+    max: 20,
     message: 'Too many login/signup attempts, please try again after 15 minutes.',
     skipSuccessfulRequests: true,
 });

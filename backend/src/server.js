@@ -8,7 +8,7 @@ const passport = require('passport');
 const { sequelize } = require('./config/db');
 require('./models/associations'); // Load associations
 require('./config/passport'); // Import passport config
-// const redisClient = require('./config/redis'); // For Redis later
+const { redisClient } = require('./config/redis'); // For Redis later
 const { generalLimiter, authLimiter, orderLimiter, searchLimiter } = require('./middleware/rateLimiter');
 
 // Custom XSS sanitizer (xss-clean is incompatible with Express 5)
@@ -40,8 +40,16 @@ app.use(helmet({
 // Core Middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(xssSanitize); // Sanitize body & params (placed after JSON parser)
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+];
+if (process.env.FRONTEND_URL) {
+    allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000', // Dynamic Frontend URL
+    origin: allowedOrigins,
     credentials: true
 }));
 

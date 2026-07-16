@@ -5,34 +5,6 @@ const path = require('path');
 const imageCache = {};
 
 const convertImagePathToBase64 = (imagePath) => {
-    if (!imagePath || imagePath.startsWith('data:') || imagePath.startsWith('http')) {
-        return imagePath;
-    }
-
-    // Check cache first
-    if (imageCache[imagePath]) {
-        return imageCache[imagePath];
-    }
-
-    try {
-        if (imagePath.startsWith('/uploads/')) {
-            const fileName = path.basename(imagePath);
-            const filePath = path.join(__dirname, '../../public/uploads', fileName);
-            
-            if (fs.existsSync(filePath)) {
-                const fileBuffer = fs.readFileSync(filePath);
-                const ext = path.extname(filePath).toLowerCase().slice(1);
-                const mimeType = `image/${ext === 'jpg' ? 'jpeg' : ext}`;
-                const base64 = `data:${mimeType};base64,${fileBuffer.toString('base64')}`;
-                imageCache[imagePath] = base64;
-                return base64;
-            }
-        }
-    } catch (error) {
-        console.error(`Error converting image ${imagePath}:`, error.message);
-    }
-
-    // Return original if conversion fails
     return imagePath;
 };
 

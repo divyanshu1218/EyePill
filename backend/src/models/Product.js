@@ -36,7 +36,7 @@ const Product = sequelize.define('Product', {
         allowNull: true
     },
     image: {
-        type: DataTypes.TEXT('long'),
+        type: DataTypes.TEXT,
         allowNull: true
     },
     rating: {
