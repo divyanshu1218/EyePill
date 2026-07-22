@@ -100,13 +100,15 @@ const Login = () => {
                   {loggingIn ? "Logging In..." : "Login"}
                 </button>
                 <button
+                  type="button"
                   className="btn-secondary w-2/3 text-sm md:text-base text-center"
                   onClick={() => {
-                    setLoginCredentials({
-                      ...loginCredentials,
+                    const guestCreds = {
                       email: "kookie@bangtan.com",
                       password: "bangtan0707",
-                    });
+                    };
+                    setLoginCredentials(guestCreds);
+                    loginHandler(guestCreds);
                   }}
                 >
                   Login as a Guest
