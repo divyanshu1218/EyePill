@@ -32,8 +32,9 @@ const shouldEnableSsl = () => {
     return false;
 };
 
-// Use SQLite fallback ONLY if explicitly set via USE_SQLITE=true
-const useSqlite = process.env.USE_SQLITE === 'true';
+// Default to SQLite on Render/Cloud deployments unless USE_MYSQL=true is explicitly specified
+const useSqlite = process.env.USE_SQLITE === 'true' || 
+    (isRenderCloud && process.env.USE_MYSQL !== 'true');
 
 if (useSqlite) {
     console.log('Database Engine: SQLite (embedded zero-config)');
