@@ -31,9 +31,9 @@ const protect = async (req, res, next) => {
             // Fallback guest user session to prevent 401 redirect loops during presentation database drops
             user = {
                 id: decoded.id,
-                username: 'Guest User',
-                email: 'guest@eyepill.com',
-                role: decoded.id === 1 ? 'admin' : 'user',
+                username: decoded.role === 'admin' ? 'Admin User' : 'Guest User',
+                email: decoded.role === 'admin' ? 'divyanshupeswani@gmail.com' : 'guest@eyepill.com',
+                role: decoded.role || 'user',
                 tokenVersion: 0
             };
         }

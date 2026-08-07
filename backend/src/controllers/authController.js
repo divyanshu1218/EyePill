@@ -4,9 +4,9 @@ const User = require('../models/User');
 
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 
-const generateToken = (id, tokenVersion = 0) => {
+const generateToken = (id, role = 'user', tokenVersion = 0) => {
     return jwt.sign(
-        { id, tokenVersion },
+        { id, role, tokenVersion },
         process.env.JWT_SECRET,
         {
             expiresIn: JWT_EXPIRES_IN,
@@ -62,7 +62,7 @@ const signup = async (req, res) => {
                 username: user.username,
                 email: user.email,
                 role: user.role,
-                token: generateToken(user.id, user.tokenVersion),
+                token: generateToken(user.id, user.role, user.tokenVersion),
             });
         } else {
             res.status(400).json({ 
@@ -80,7 +80,7 @@ const signup = async (req, res) => {
             username: username || 'User',
             email: email,
             role: 'user',
-            token: generateToken(fallbackId, 0)
+            token: generateToken(fallbackId, 'user', 0)
         });
     }
 };
@@ -127,7 +127,7 @@ const login = async (req, res) => {
                 username: user.username,
                 email: user.email,
                 role: user.role,
-                token: generateToken(user.id, user.tokenVersion),
+                token: generateToken(user.id, user.role, user.tokenVersion),
             });
         }
 
@@ -140,7 +140,7 @@ const login = async (req, res) => {
             username: email.split('@')[0] || 'Guest User',
             email: email,
             role: isAdminEmail ? 'admin' : 'user',
-            token: generateToken(fallbackUserId, 0)
+            token: generateToken(fallbackUserId, isAdminEmail ? 'admin' : 'user', 0)
         });
     } catch (error) {
         console.error('login fallback handler:', error.message);
@@ -151,7 +151,7 @@ const login = async (req, res) => {
             username: email ? email.split('@')[0] : 'Guest User',
             email: email || 'guest@eyepill.com',
             role: 'user',
-            token: generateToken(fallbackUserId, 0)
+            token: generateToken(fallbackUserId, 'user', 0)
         });
     }
 };
