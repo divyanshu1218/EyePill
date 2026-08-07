@@ -133,7 +133,7 @@ const initialProducts = [
         category: "sports",
         gender: "men",
         description: "Active wear for high performance.",
-        image: "https://images.unsplash.com/photo-1502489597346-dad15683d4c2?auto=format&fit=crop&q=80&w=800",
+        image: "/images/classy_sports_eyewear.png",
         rating: 4.5,
         trending: true,
         qty: 20,
@@ -261,9 +261,11 @@ sequelize.authenticate()
                 const shoeSample = await Product.findOne({
                     where: {
                         [require('sequelize').Op.or]: [
+                            { image: { [require('sequelize').Op.like]: '%1502489597346%' } },
                             { image: { [require('sequelize').Op.like]: '%1511499767390%' } },
                             { image: { [require('sequelize').Op.like]: '%1511556532299%' } },
                             { image: { [require('sequelize').Op.like]: '%1509198397868%' } },
+                            { additionalImages: { [require('sequelize').Op.like]: '%1502489597346%' } },
                             { additionalImages: { [require('sequelize').Op.like]: '%1511499767390%' } },
                             { additionalImages: { [require('sequelize').Op.like]: '%1511556532299%' } },
                             { additionalImages: { [require('sequelize').Op.like]: '%1509198397868%' } }
@@ -291,7 +293,10 @@ sequelize.authenticate()
                 // Reseed if sports category contains the shoe image Unsplash ID
                 const shoeCat = await CategoryModel.findOne({
                     where: {
-                        categoryImg: { [require('sequelize').Op.like]: '%1511556532299%' }
+                        [require('sequelize').Op.or]: [
+                            { categoryImg: { [require('sequelize').Op.like]: '%1511556532299%' } },
+                            { categoryImg: { [require('sequelize').Op.like]: '%1502489597346%' } }
+                        ]
                     }
                 });
                 if (!sampleCat || !sampleCat.categoryImg || shoeCat) {
@@ -305,7 +310,7 @@ sequelize.authenticate()
                     { 
                         categoryName: "sports", 
                         description: "High performance athletic eyewear",
-                        categoryImg: "https://images.unsplash.com/photo-1502489597346-dad15683d4c2?auto=format&fit=crop&q=80&w=800"
+                        categoryImg: "/images/classy_sports_eyewear.png"
                     },
                     { 
                         categoryName: "sunglasses", 

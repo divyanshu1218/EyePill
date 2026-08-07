@@ -31,7 +31,7 @@ const fallbackProducts = [
         category: "sports",
         gender: "men",
         description: "Active wear for high performance sports. Lightweight frame designed for max comfort during movement.",
-        image: "https://images.unsplash.com/photo-1502489597346-dad15683d4c2?auto=format&fit=crop&q=80&w=800",
+        image: "/images/classy_sports_eyewear.png",
         rating: 4.5,
         trending: true,
         qty: 20,
@@ -161,7 +161,7 @@ const fallbackCategories = [
         id: 1, 
         categoryName: "sports", 
         description: "High performance athletic eyewear",
-        categoryImg: "https://images.unsplash.com/photo-1502489597346-dad15683d4c2?auto=format&fit=crop&q=80&w=800"
+        categoryImg: "/images/classy_sports_eyewear.png"
     },
     { 
         id: 2, 
