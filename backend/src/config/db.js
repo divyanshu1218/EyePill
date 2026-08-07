@@ -6,21 +6,24 @@ dotenv.config();
 
 let sequelize;
 
-const isProduction = process.env.NODE_ENV === 'production' || Boolean(process.env.VERCEL) || Boolean(process.env.RENDER);
 const connectionUri = process.env.DATABASE_URL || process.env.MYSQL_URL;
+const isLocalDbHost = !process.env.DB_HOST || process.env.DB_HOST === 'localhost' || process.env.DB_HOST === '127.0.0.1';
+const isRenderCloud = Boolean(process.env.RENDER || process.env.RENDER_SERVICE_ID || process.env.VERCEL || process.env.NODE_ENV === 'production');
 
-// Use SQLite fallback when deployed on Render without a remote MySQL host
+// Use SQLite fallback when running on Render/cloud OR when no remote MySQL host is configured
 const useSqlite = process.env.USE_SQLITE === 'true' || 
-    (isProduction && !connectionUri && (!process.env.DB_HOST || process.env.DB_HOST === 'localhost' || process.env.DB_HOST === '127.0.0.1'));
+    (isRenderCloud && !connectionUri && isLocalDbHost) || 
+    (process.env.USE_MYSQL !== 'true' && isLocalDbHost && !connectionUri);
 
 if (useSqlite) {
-    console.log('Using zero-config SQLite embedded database for deployment');
+    console.log('Database Engine: SQLite (embedded zero-config)');
     sequelize = new Sequelize({
         dialect: 'sqlite',
         storage: path.join(__dirname, '../../database.sqlite'),
         logging: false
     });
 } else if (connectionUri) {
+    console.log('Database Engine: MySQL (Connection URI)');
     const shouldEnableSsl = () => process.env.DB_SSL === 'true' || process.env.DB_SSL === '1';
 
     sequelize = new Sequelize(connectionUri, {
@@ -39,6 +42,7 @@ if (useSqlite) {
         }
     });
 } else {
+    console.log(`Database Engine: MySQL (${process.env.DB_HOST}:${process.env.DB_PORT || 3306})`);
     const shouldEnableSsl = () => process.env.DB_SSL === 'true' || process.env.DB_SSL === '1';
 
     sequelize = new Sequelize(
@@ -66,5 +70,6 @@ if (useSqlite) {
 }
 
 module.exports = { sequelize };
+
 
 
