@@ -119,7 +119,7 @@ const initialProducts = [
         trending: true,
         qty: 15,
         additionalImages: [
-            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800"
@@ -133,12 +133,12 @@ const initialProducts = [
         category: "sports",
         gender: "men",
         description: "Active wear for high performance.",
-        image: "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1502489597346-dad15683d4c2?auto=format&fit=crop&q=80&w=800",
         rating: 4.5,
         trending: true,
         qty: 20,
         additionalImages: [
-            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800"
@@ -160,7 +160,7 @@ const initialProducts = [
             "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
+            "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&q=80&w=800"
         ]
     },
     {
@@ -179,7 +179,7 @@ const initialProducts = [
             "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
+            "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&q=80&w=800"
         ]
     },
     {
@@ -190,7 +190,7 @@ const initialProducts = [
         category: "sports",
         gender: "women",
         description: "Funky and fresh design.",
-        image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&q=80&w=800",
         rating: 4.3,
         trending: true,
         qty: 25,
@@ -209,7 +209,7 @@ const initialProducts = [
         category: "sunglasses",
         gender: "unisex",
         description: "Edgy cut-out frame design.",
-        image: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&q=80&w=800",
         rating: 4.6,
         trending: true,
         qty: 12,
@@ -257,11 +257,16 @@ sequelize.authenticate()
             const count = await Product.count();
             let shouldReSeed = count === 0;
             if (count > 0) {
+                // Reseed if any product contains the old shoe image or controller image Unsplash IDs
                 const shoeSample = await Product.findOne({
                     where: {
                         [require('sequelize').Op.or]: [
                             { image: { [require('sequelize').Op.like]: '%1511499767390%' } },
-                            { additionalImages: { [require('sequelize').Op.like]: '%1511499767390%' } }
+                            { image: { [require('sequelize').Op.like]: '%1511556532299%' } },
+                            { image: { [require('sequelize').Op.like]: '%1509198397868%' } },
+                            { additionalImages: { [require('sequelize').Op.like]: '%1511499767390%' } },
+                            { additionalImages: { [require('sequelize').Op.like]: '%1511556532299%' } },
+                            { additionalImages: { [require('sequelize').Op.like]: '%1509198397868%' } }
                         ]
                     }
                 });
@@ -283,7 +288,13 @@ sequelize.authenticate()
             let shouldSeedCategories = categoryCount === 0;
             if (categoryCount > 0) {
                 const sampleCat = await CategoryModel.findOne();
-                if (!sampleCat || !sampleCat.categoryImg) {
+                // Reseed if sports category contains the shoe image Unsplash ID
+                const shoeCat = await CategoryModel.findOne({
+                    where: {
+                        categoryImg: { [require('sequelize').Op.like]: '%1511556532299%' }
+                    }
+                });
+                if (!sampleCat || !sampleCat.categoryImg || shoeCat) {
                     shouldSeedCategories = true;
                     await CategoryModel.destroy({ where: {}, force: true });
                 }
@@ -294,7 +305,7 @@ sequelize.authenticate()
                     { 
                         categoryName: "sports", 
                         description: "High performance athletic eyewear",
-                        categoryImg: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
+                        categoryImg: "https://images.unsplash.com/photo-1502489597346-dad15683d4c2?auto=format&fit=crop&q=80&w=800"
                     },
                     { 
                         categoryName: "sunglasses", 

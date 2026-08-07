@@ -14,7 +14,7 @@ const fallbackProducts = [
         trending: true,
         qty: 15,
         additionalImages: [
-            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800"
@@ -31,12 +31,12 @@ const fallbackProducts = [
         category: "sports",
         gender: "men",
         description: "Active wear for high performance sports. Lightweight frame designed for max comfort during movement.",
-        image: "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1502489597346-dad15683d4c2?auto=format&fit=crop&q=80&w=800",
         rating: 4.5,
         trending: true,
         qty: 20,
         additionalImages: [
-            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800"
@@ -61,7 +61,7 @@ const fallbackProducts = [
             "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
+            "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&q=80&w=800"
         ],
         colors: ["Silver"],
         sizes: ["Medium"]
@@ -83,7 +83,7 @@ const fallbackProducts = [
             "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
+            "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&q=80&w=800"
         ],
         colors: ["Black"],
         sizes: ["Large"]
@@ -97,7 +97,7 @@ const fallbackProducts = [
         category: "sports",
         gender: "women",
         description: "Funky and fresh pop-color design for everyday fashion statement.",
-        image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&q=80&w=800",
         rating: 4.3,
         trending: true,
         qty: 25,
@@ -119,7 +119,7 @@ const fallbackProducts = [
         category: "sunglasses",
         gender: "unisex",
         description: "Edgy cut-out frame design with dark gradient UV protection lenses.",
-        image: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&q=80&w=800",
         rating: 4.6,
         trending: true,
         qty: 12,
@@ -161,7 +161,7 @@ const fallbackCategories = [
         id: 1, 
         categoryName: "sports", 
         description: "High performance athletic eyewear",
-        categoryImg: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
+        categoryImg: "https://images.unsplash.com/photo-1502489597346-dad15683d4c2?auto=format&fit=crop&q=80&w=800"
     },
     { 
         id: 2, 
