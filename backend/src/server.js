@@ -217,6 +217,26 @@ sequelize.authenticate()
                 await Product.bulkCreate(initialProducts);
                 console.log('Auto-seeded initial product catalog!');
             }
+
+            // Auto-seed admin user
+            const UserModel = require('./models/User');
+            const adminExists = await UserModel.findOne({ where: { email: 'divyanshupeswani@gmail.com' } });
+            if (!adminExists) {
+                const bcrypt = require('bcryptjs');
+                const salt = await bcrypt.genSalt(10);
+                const hashedPassword = await bcrypt.hash('admin123', salt);
+                await UserModel.create({
+                    id: 1,
+                    username: 'divyanshupeswani',
+                    firstName: 'Divyanshu',
+                    lastName: 'Peswani',
+                    email: 'divyanshupeswani@gmail.com',
+                    password: hashedPassword,
+                    role: 'admin',
+                    tokenVersion: 0
+                });
+                console.log('Auto-seeded admin user into database!');
+            }
         } catch (seedErr) {
             console.error('Auto-seeding check failed:', seedErr.message);
         }
