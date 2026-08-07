@@ -122,7 +122,7 @@ const initialProducts = [
             "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800"
+            "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800"
         ]
     },
     {
@@ -133,7 +133,7 @@ const initialProducts = [
         category: "sports",
         gender: "men",
         description: "Active wear for high performance.",
-        image: "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800",
         rating: 4.5,
         trending: true,
         qty: 20,
@@ -159,7 +159,7 @@ const initialProducts = [
         additionalImages: [
             "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
         ]
     },
@@ -176,7 +176,7 @@ const initialProducts = [
         trending: true,
         qty: 8,
         additionalImages: [
-            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
@@ -196,7 +196,7 @@ const initialProducts = [
         qty: 25,
         additionalImages: [
             "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800"
         ]
@@ -209,12 +209,12 @@ const initialProducts = [
         category: "sunglasses",
         gender: "unisex",
         description: "Edgy cut-out frame design.",
-        image: "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
         rating: 4.6,
         trending: true,
         qty: 12,
         additionalImages: [
-            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800"
@@ -234,7 +234,7 @@ const initialProducts = [
         qty: 30,
         additionalImages: [
             "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1509695507497-903c140c43b0?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800"
         ]
