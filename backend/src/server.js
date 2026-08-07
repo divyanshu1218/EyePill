@@ -257,8 +257,15 @@ sequelize.authenticate()
             const count = await Product.count();
             let shouldReSeed = count === 0;
             if (count > 0) {
-                const sample = await Product.findOne();
-                if (!sample || !sample.additionalImages || sample.additionalImages.length === 0) {
+                const shoeSample = await Product.findOne({
+                    where: {
+                        [require('sequelize').Op.or]: [
+                            { image: { [require('sequelize').Op.like]: '%1511499767390%' } },
+                            { additionalImages: { [require('sequelize').Op.like]: '%1511499767390%' } }
+                        ]
+                    }
+                });
+                if (shoeSample) {
                     shouldReSeed = true;
                     // Delete old items to prevent primary key duplicates during re-seeding
                     await Product.destroy({ where: {}, force: true });
