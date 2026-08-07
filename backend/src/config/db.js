@@ -22,16 +22,17 @@ if (rawHost.includes(':')) {
 const dbHost = rawHost;
 
 const isLocalDbHost = !dbHost || dbHost === 'localhost' || dbHost === '127.0.0.1';
-const isCloudHost = Boolean(dbHost && (dbHost.includes('rlwy.net') || dbHost.includes('aiven') || dbHost.includes('planetscale') || dbHost.includes('aws') || dbHost.includes('clever-cloud')));
 const isRenderCloud = Boolean(process.env.RENDER || process.env.RENDER_SERVICE_ID || process.env.VERCEL || process.env.NODE_ENV === 'production');
 
 const shouldEnableSsl = () => {
-    if (process.env.DB_SSL === 'false' || process.env.DB_SSL === '0') return false;
     if (process.env.DB_SSL === 'true' || process.env.DB_SSL === '1') return true;
-    return isCloudHost || (isRenderCloud && !isLocalDbHost);
+    if (process.env.DB_SSL === 'false' || process.env.DB_SSL === '0') return false;
+    // Railway TCP proxies (rlwy.net) explicitly do NOT use SSL
+    if (dbHost.includes('rlwy.net') || (connectionUri && connectionUri.includes('rlwy.net'))) return false;
+    return false;
 };
 
-// Use SQLite fallback ONLY if no connectionUri AND DB_HOST is localhost/missing AND USE_SQLITE is true
+// Use SQLite fallback ONLY if explicitly set via USE_SQLITE=true
 const useSqlite = process.env.USE_SQLITE === 'true';
 
 if (useSqlite) {
@@ -85,7 +86,3 @@ if (useSqlite) {
 }
 
 module.exports = { sequelize };
-
-
-
-
