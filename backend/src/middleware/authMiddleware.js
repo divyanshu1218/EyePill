@@ -6,11 +6,10 @@ const protect = async (req, res, next) => {
     let token;
 
     if (authHeader && typeof authHeader === 'string') {
-        const [scheme, credentials] = authHeader.split(' ');
-        if (scheme && scheme.toLowerCase() === 'bearer' && credentials) {
-            token = credentials;
+        if (authHeader.toLowerCase().startsWith('bearer ')) {
+            token = authHeader.substring(7);
         } else {
-            return res.status(401).json({ message: 'Not authorized, invalid authorization format' });
+            token = authHeader;
         }
     }
 
