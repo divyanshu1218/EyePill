@@ -270,6 +270,40 @@ sequelize.authenticate()
                 console.log('Auto-seeded initial product catalog with additional images!');
             }
 
+            // Auto-seed categories
+            const CategoryModel = require('./models/Category');
+            const categoryCount = await CategoryModel.count();
+            let shouldSeedCategories = categoryCount === 0;
+            if (categoryCount > 0) {
+                const sampleCat = await CategoryModel.findOne();
+                if (!sampleCat || !sampleCat.categoryImg) {
+                    shouldSeedCategories = true;
+                    await CategoryModel.destroy({ where: {}, force: true });
+                }
+            }
+
+            if (shouldSeedCategories) {
+                const initialCategories = [
+                    { 
+                        categoryName: "sports", 
+                        description: "High performance athletic eyewear",
+                        categoryImg: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
+                    },
+                    { 
+                        categoryName: "sunglasses", 
+                        description: "UV protected luxury fashion sunglasses",
+                        categoryImg: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800"
+                    },
+                    { 
+                        categoryName: "vision", 
+                        description: "Blue light blocking optical glasses",
+                        categoryImg: "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?auto=format&fit=crop&q=80&w=800"
+                    }
+                ];
+                await CategoryModel.bulkCreate(initialCategories);
+                console.log('Auto-seeded initial categories with images!');
+            }
+
             // Auto-seed admin user
             const UserModel = require('./models/User');
             const adminExists = await UserModel.findOne({ where: { email: 'divyanshupeswani@gmail.com' } });
