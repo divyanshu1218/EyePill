@@ -14,7 +14,9 @@ const fallbackProducts = [
         trending: true,
         qty: 15,
         additionalImages: [
-            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
             "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800"
         ],
         colors: ["Gold", "Black"],
@@ -33,6 +35,12 @@ const fallbackProducts = [
         rating: 4.5,
         trending: true,
         qty: 20,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800"
+        ],
         colors: ["Matte Black"],
         sizes: ["Standard"]
     },
@@ -49,6 +57,12 @@ const fallbackProducts = [
         rating: 4.8,
         trending: true,
         qty: 10,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
+        ],
         colors: ["Silver"],
         sizes: ["Medium"]
     },
@@ -65,6 +79,12 @@ const fallbackProducts = [
         rating: 4.9,
         trending: true,
         qty: 8,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
+        ],
         colors: ["Black"],
         sizes: ["Large"]
     },
@@ -81,6 +101,12 @@ const fallbackProducts = [
         rating: 4.3,
         trending: true,
         qty: 25,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800"
+        ],
         colors: ["Pink", "Yellow"],
         sizes: ["Small", "Medium"]
     },
@@ -97,6 +123,12 @@ const fallbackProducts = [
         rating: 4.6,
         trending: true,
         qty: 12,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800"
+        ],
         colors: ["Gunmetal"],
         sizes: ["Medium"]
     },
@@ -113,6 +145,12 @@ const fallbackProducts = [
         rating: 4.4,
         trending: true,
         qty: 30,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800"
+        ],
         colors: ["Rose Gold", "Gold"],
         sizes: ["Small", "Medium"]
     }

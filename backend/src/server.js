@@ -117,7 +117,13 @@ const initialProducts = [
         image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
         rating: 4.7,
         trending: true,
-        qty: 15
+        qty: 15,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800"
+        ]
     },
     {
         name: "Caper Active",
@@ -130,7 +136,13 @@ const initialProducts = [
         image: "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
         rating: 4.5,
         trending: true,
-        qty: 20
+        qty: 20,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800"
+        ]
     },
     {
         name: "Alder Street",
@@ -143,7 +155,13 @@ const initialProducts = [
         image: "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
         rating: 4.8,
         trending: true,
-        qty: 10
+        qty: 10,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
+        ]
     },
     {
         name: "Black boss",
@@ -156,7 +174,13 @@ const initialProducts = [
         image: "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
         rating: 4.9,
         trending: true,
-        qty: 8
+        qty: 8,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800"
+        ]
     },
     {
         name: "Hip Hop Candy",
@@ -169,7 +193,13 @@ const initialProducts = [
         image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=800",
         rating: 4.3,
         trending: true,
-        qty: 25
+        qty: 25,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800"
+        ]
     },
     {
         name: "Punk Cut Out",
@@ -182,7 +212,13 @@ const initialProducts = [
         image: "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
         rating: 4.6,
         trending: true,
-        qty: 12
+        qty: 12,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800"
+        ]
     },
     {
         name: "Rounded Gold",
@@ -195,7 +231,13 @@ const initialProducts = [
         image: "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?auto=format&fit=crop&q=80&w=800",
         rating: 4.4,
         trending: true,
-        qty: 30
+        qty: 30,
+        additionalImages: [
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1511499767390-90342f16b147?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1508296695146-257a814070b4?auto=format&fit=crop&q=80&w=800"
+        ]
     }
 ];
 
@@ -210,12 +252,22 @@ sequelize.authenticate()
             console.log('Database Synced (safe)');
         }
 
-        // Auto-seed sample products if database is empty
+        // Auto-seed sample products if database is empty or lacks additionalImages
         try {
             const count = await Product.count();
-            if (count === 0) {
+            let shouldReSeed = count === 0;
+            if (count > 0) {
+                const sample = await Product.findOne();
+                if (!sample || !sample.additionalImages || sample.additionalImages.length === 0) {
+                    shouldReSeed = true;
+                    // Delete old items to prevent primary key duplicates during re-seeding
+                    await Product.destroy({ where: {}, force: true });
+                }
+            }
+
+            if (shouldReSeed) {
                 await Product.bulkCreate(initialProducts);
-                console.log('Auto-seeded initial product catalog!');
+                console.log('Auto-seeded initial product catalog with additional images!');
             }
 
             // Auto-seed admin user
