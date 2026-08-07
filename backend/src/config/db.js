@@ -9,9 +9,23 @@ const isProduction = process.env.NODE_ENV === 'production' || Boolean(process.en
 const connectionUri = process.env.DATABASE_URL || process.env.MYSQL_URL;
 
 const shouldEnableSsl = () => {
-    if (process.env.DB_SSL === 'false') return false;
-    if (process.env.DB_SSL === 'true') return true;
-    return isProduction && Boolean(process.env.DB_HOST && process.env.DB_HOST !== 'localhost' && process.env.DB_HOST !== '127.0.0.1');
+    if (process.env.DB_SSL === 'true' || process.env.DB_SSL === '1') return true;
+    // Default to false to prevent PROTOCOL_CONNECTION_LOST on non-SSL MySQL hosts
+    return false;
+};
+
+const getDialectOptions = () => {
+    const options = {
+        connectTimeout: 60000,
+        enableKeepAlive: true
+    };
+    if (shouldEnableSsl()) {
+        options.ssl = {
+            require: true,
+            rejectUnauthorized: false
+        };
+    }
+    return options;
 };
 
 if (connectionUri) {
@@ -24,12 +38,7 @@ if (connectionUri) {
             acquire: 30000,
             idle: 10000
         },
-        dialectOptions: shouldEnableSsl() ? {
-            ssl: {
-                require: true,
-                rejectUnauthorized: false
-            }
-        } : {}
+        dialectOptions: getDialectOptions()
     });
 } else {
     sequelize = new Sequelize(
@@ -47,12 +56,7 @@ if (connectionUri) {
                 acquire: 30000,
                 idle: 10000
             },
-            dialectOptions: shouldEnableSsl() ? {
-                ssl: {
-                    require: true,
-                    rejectUnauthorized: false
-                }
-            } : {}
+            dialectOptions: getDialectOptions()
         }
     );
 }
