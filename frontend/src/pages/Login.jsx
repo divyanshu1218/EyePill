@@ -30,12 +30,15 @@ const Login = () => {
     let id;
     if (token) {
       id = setTimeout(() => {
-        navigate(location?.state?.from?.pathname ?? "/");
+        const dest = (location?.state?.from?.pathname && location.state.from.pathname !== "/login")
+          ? location.state.from.pathname
+          : "/";
+        navigate(dest, { replace: true });
       }, 1000);
     }
 
     return () => {
-      clearInterval(id);
+      clearTimeout(id);
     };
   }, [token, location?.state?.from?.pathname, navigate]);
 

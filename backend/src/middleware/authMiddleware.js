@@ -38,7 +38,9 @@ const protect = async (req, res, next) => {
             };
         }
 
-        if (typeof decoded.tokenVersion !== 'undefined' && user.tokenVersion !== decoded.tokenVersion) {
+        const dbTokenVersion = user.tokenVersion || 0;
+        const decodedTokenVersion = decoded.tokenVersion || 0;
+        if (dbTokenVersion !== decodedTokenVersion) {
             return res.status(401).json({ message: 'Not authorized, token revoked' });
         }
 

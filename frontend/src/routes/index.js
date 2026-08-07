@@ -19,7 +19,11 @@ const Index = () => {
         element={
           token ? (
             <Navigate
-              to={location?.state?.from?.pathname ?? "/"}
+              to={
+                (location?.state?.from?.pathname && location.state.from.pathname !== "/login")
+                  ? location.state.from.pathname
+                  : "/"
+              }
               replace={true}
             />
           ) : (
