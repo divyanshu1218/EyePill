@@ -66,21 +66,15 @@ Built using React, Node.js, Express, MySQL, and Sequelize ORM, the application c
 
 ## 🏠 Homepage
 
-```md
 ![Homepage](./screenshots/home.png)
-```
 
 ## 🛍️ Product Page
 
-```md
 ![Products](./screenshots/products.png)
-```
 
 ## ⚙️ Admin Dashboard
 
-```md
 ![Admin](./screenshots/admin.png)
-```
 
 ---
 

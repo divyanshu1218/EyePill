@@ -29,29 +29,41 @@ exports.getAllProducts = async (req, res) => {
             order: [['createdAt', 'DESC']]
         };
 
+        const fetchProductsWithFallback = async (options) => {
+            try {
+                return await Product.findAll(options);
+            } catch (queryErr) {
+                console.error('Fetch with reviews failed, attempting simple query:', queryErr.message);
+                const simpleOptions = { order: [['createdAt', 'DESC']] };
+                if (options.limit) simpleOptions.limit = options.limit;
+                if (options.offset) simpleOptions.offset = options.offset;
+                return await Product.findAll(simpleOptions);
+            }
+        };
+
         // Only apply pagination if page/limit params are provided
         if (req.query.page && req.query.limit) {
-            const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 12;
-            const offset = (page - 1) * limit;
-            queryOptions.limit = limit;
-            queryOptions.offset = offset;
+            const pageNum = parseInt(req.query.page) || 1;
+            const limitNum = parseInt(req.query.limit) || 12;
+            const offsetNum = (pageNum - 1) * limitNum;
+            queryOptions.limit = limitNum;
+            queryOptions.offset = offsetNum;
 
             const totalCount = await Product.count();
-            let products = await Product.findAll(queryOptions);
+            let products = await fetchProductsWithFallback(queryOptions);
             products = normalizeProductsArray(products);
-            const totalPages = Math.ceil(totalCount / limit);
+            const totalPages = Math.ceil(totalCount / limitNum);
 
             const responseData = { 
                 success: true, 
                 products,
                 pagination: {
-                    currentPage: parseInt(page) || 1,
+                    currentPage: pageNum,
                     totalPages,
                     totalCount,
-                    itemsPerPage: parseInt(limit) || 12,
-                    hasNextPage: (parseInt(page) || 1) < totalPages,
-                    hasPrevPage: (parseInt(page) || 1) > 1
+                    itemsPerPage: limitNum,
+                    hasNextPage: pageNum < totalPages,
+                    hasPrevPage: pageNum > 1
                 }
             };
 
@@ -67,7 +79,7 @@ exports.getAllProducts = async (req, res) => {
         }
 
         // No pagination — return all products
-        let products = await Product.findAll(queryOptions);
+        let products = await fetchProductsWithFallback(queryOptions);
         products = normalizeProductsArray(products);
         
         const responseData = { success: true, products };
@@ -81,8 +93,8 @@ exports.getAllProducts = async (req, res) => {
 
         res.status(200).json(responseData);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: 'Server Error' });
+        console.error('getAllProducts error:', err);
+        res.status(500).json({ success: false, message: 'Server Error', error: err.message });
     }
 };
 
