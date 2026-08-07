@@ -19,6 +19,7 @@ const API_PREFIX = process.env.REACT_APP_API_BASE_URL ? process.env.REACT_APP_AP
 
 const Admin = () => {
     const { token } = useAuthContext();
+    const formattedToken = token?.startsWith('Bearer ') ? token : `Bearer ${token}`;
     const { allProducts, refreshProducts } = useProductsContext();
     const [activeTab, setActiveTab] = useState("dashboard");
 
@@ -64,7 +65,7 @@ const Admin = () => {
             (async () => {
                 setLoadingOrders(true);
                 try {
-                    const res = await axios.get(API_PREFIX + "/api/orders/admin/all", { headers: { authorization: token } });
+                    const res = await axios.get(API_PREFIX + "/api/orders/admin/all", { headers: { authorization: formattedToken } });
                     if (res.data.success) setOrders(res.data.orders);
                 } catch (err) { console.error(err); notify("error", "Failed to load orders"); }
                 finally { setLoadingOrders(false); }
@@ -93,7 +94,7 @@ const Admin = () => {
             (async () => {
                 setLoadingUsers(true);
                 try {
-                    const res = await axios.get(API_PREFIX + "/api/admin/users", { headers: { authorization: token } });
+                    const res = await axios.get(API_PREFIX + "/api/admin/users", { headers: { authorization: formattedToken } });
                     if (res.data.success) setUsers(res.data.users);
                 } catch (err) { console.error(err); }
                 finally { setLoadingUsers(false); }
@@ -104,7 +105,7 @@ const Admin = () => {
     // Order status update
     const handleOrderStatusChange = async (orderId, newStatus) => {
         try {
-            const res = await axios.put(API_PREFIX + `/api/orders/admin/${orderId}`, { orderStatus: newStatus }, { headers: { authorization: token } });
+            const res = await axios.put(API_PREFIX + `/api/orders/admin/${orderId}`, { orderStatus: newStatus }, { headers: { authorization: formattedToken } });
             if (res.data.success) {
                 setOrders(prev => prev.map(o => o.id === orderId ? { ...o, orderStatus: newStatus } : o));
                 notify("success", `Order status updated to ${newStatus}`);
@@ -133,7 +134,7 @@ const Admin = () => {
             if (productData.image) formData.append('image', productData.image);
             productData.additionalImages.forEach(file => formData.append('additionalImages', file));
 
-            const config = { headers: { authorization: token } };
+            const config = { headers: { authorization: formattedToken } };
             let response;
             if (isEditing) {
                 response = await axios.put(API_PREFIX + `/api/admin/products/${editProductId}`, formData, config);
@@ -160,7 +161,7 @@ const Admin = () => {
         setHiddenProductIds(prev => [...prev, id]);
         const timeoutId = setTimeout(async () => {
             try {
-                const response = await axios.delete(API_PREFIX + `/api/admin/products/${id}`, { headers: { authorization: token } });
+                const response = await axios.delete(API_PREFIX + `/api/admin/products/${id}`, { headers: { authorization: formattedToken } });
                 if (response.data.success) { refreshProducts(); setHiddenProductIds(prev => prev.filter(hid => hid !== id)); }
             } catch (err) { console.error(err); notify("error", "Failed to delete product"); setHiddenProductIds(prev => prev.filter(hid => hid !== id)); }
         }, 5000);
