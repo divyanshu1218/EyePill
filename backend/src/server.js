@@ -79,9 +79,28 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/orders', orderLimiter, orderRoutes);     // Order rate limit
 
 
-// Test Route
+// Test & Health Routes
 app.get('/', (req, res) => {
     res.send('API is running...');
+});
+
+app.get('/api/health', async (req, res) => {
+    try {
+        await sequelize.authenticate();
+        res.json({
+            status: 'ok',
+            database: 'connected',
+            host: process.env.DB_HOST || 'via_url',
+            nodeEnv: process.env.NODE_ENV
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            database: 'disconnected',
+            error: err.message,
+            hint: 'Ensure DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT or DATABASE_URL are properly configured on Render environment settings.'
+        });
+    }
 });
 
 // Database Connection and Sync

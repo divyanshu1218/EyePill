@@ -25,12 +25,13 @@ router.get('/google/callback',
 
         // Redirect to frontend with token dynamically (falling back to localhost)
         const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-        res.redirect(`${frontendUrl}/login?token=${token}&user=${JSON.stringify({
+        const userJson = encodeURIComponent(JSON.stringify({
             _id: req.user.id,
             username: req.user.username,
             email: req.user.email,
             role: req.user.role
-        })}`);
+        }));
+        res.redirect(`${frontendUrl}/login?token=${token}&user=${userJson}`);
     }
 );
 
